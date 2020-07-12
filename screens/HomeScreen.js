@@ -12,7 +12,7 @@ export default class HomeScreen extends React.Component {
       
       }
     }
-  
+
  
  
     render() {

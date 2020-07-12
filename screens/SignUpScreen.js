@@ -19,23 +19,38 @@ export default class SignUpScreen extends React.Component {
         Fname:null,
         Lname:null,
         Email:null,
-        Password:null
+        Password:"",
+        error:null
       };
     
     }
   
 
     async SignUp(){
-      console.log("ggg")
       let data = {
         Fname:this.state.Fname,
         Lname:this.state.Lname,
-        Email:this.state.Email,
-        Password:this.state.Password
+        email:this.state.Email,
+        password:this.state.Password
       }
+      console.log(this.state.Password)
+      if(this.state.Password.length > 3){
+        let res = await Account.SignUp(data);
+        
+        if(res.error === undefined){
+          let loginRes = await Account.Login({password:this.state.Password,email:this.state.Email}) 
+          console.log(loginRes)
+          this.props.navigation.navigate("Home")
+          this.setState({error: null})
 
-      let res = await Account.SignUp(data);
-      console.log(res);
+        }else{
+          this.setState({error: res.error})
+        }
+      }else{
+        this.setState({error: "min length password 4 letter"})
+
+      }
+     
       
     }
   
@@ -54,7 +69,7 @@ export default class SignUpScreen extends React.Component {
               <TouchableOpacity onPress={()=> this.SignUp()} style={styles.btnLogin}>
                 <Text style={{textAlign:"center",color:"white",fontSize:18}}>SignUp</Text>
               </TouchableOpacity>
-
+              {this.state.error !== null ? <Text style={s.error}>{this.state.error}</Text> : null}
         </View>
         </View>
       );

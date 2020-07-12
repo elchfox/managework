@@ -44,6 +44,7 @@ module.exports = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
+  error:{ color: "red", textAlign: "center", marginTop: 15 },
   shadowPro:{
     shadowColor: "#00000026",
     shadowOffset: {
