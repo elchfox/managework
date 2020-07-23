@@ -10,7 +10,10 @@ import {
 } from "react-native";
 
 import Account from "../Data/Account"
+import ManagerAccount from "../config/ManagerAccount"
+
 var s = require("../style");
+let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 export default class SignUpScreen extends React.Component {
     constructor(props) {
@@ -33,24 +36,29 @@ export default class SignUpScreen extends React.Component {
         email:this.state.Email,
         password:this.state.Password
       }
-      console.log(this.state.Password)
-      if(this.state.Password.length > 3){
-        let res = await Account.SignUp(data);
-        
-        if(res.error === undefined){
-          let loginRes = await Account.Login({password:this.state.Password,email:this.state.Email}) 
-          console.log(loginRes)
-          this.props.navigation.navigate("Home")
-          this.setState({error: null})
-
+      if(reg.test(this.state.Email)){
+        if(this.state.Password.length > 3){
+          let res = await Account.SignUp(data);
+          
+          if(res.error === undefined){
+            let loginRes = await Account.Login({password:this.state.Password,email:this.state.Email}) 
+            await ManagerAccount.setAsyncStorage(loginRes)
+            this.props.navigation.navigate("Home")
+            this.setState({error: null})
+  
+          }else{
+            this.setState({error: res.error})
+          }
         }else{
-          this.setState({error: res.error})
+          this.setState({error: "min length password 4 letter"})
+  
         }
+       
       }else{
-        this.setState({error: "min length password 4 letter"})
+        this.setState({error: "Email is Not Correct"})
 
       }
-     
+ 
       
     }
   

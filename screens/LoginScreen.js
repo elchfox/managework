@@ -9,6 +9,8 @@ import {
 
 } from "react-native";
 
+import Account from "../Data/Account"
+import ManagerAccount from "../config/ManagerAccount"
 
 var s = require("../style");
 
@@ -16,31 +18,42 @@ export default class LoginScreen extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        Username:null,
-        Password:null
+        email:null,
+        password:null,
+        error:null
+        
       };
     
     }
   
-
-    login(){
-
+  async login() {
+      
+      let loginRes = await Account.Login({password:this.state.password,email:this.state.email});
+      if(loginRes.error === undefined){
+          await ManagerAccount.setAsyncStorage(loginRes)
+          this.props.navigation.navigate("Home")
+          }else{
+            this.setState({error: loginRes.error})
+      }
+        
     }
   
     render() {
     return (
         <View style={{flex:1,alignItems:'center',padding:15}}>
             <View style={[s.wapper]}>
-              <TextInput placeholder="UserName" placeholderTextColor={"#000"} 
-                style={styles.input} onChangeText={(text)=> this.setState({Username:text})}/>
+              <TextInput placeholder="Email" placeholderTextColor={"#000"}  keyboardType={"email-address"}
+                style={styles.input} onChangeText={(text)=> this.setState({email:text})}/>
               <TextInput placeholder="Password" secureTextEntry={true} placeholderTextColor={"#000"} 
-                style={styles.input} onChangeText={(text)=> this.setState({Password:text})}/>
+                style={styles.input} onChangeText={(text)=> this.setState({password:text})}/>
               <TouchableOpacity onPress={()=> this.login()} style={styles.btnLogin}>
                 <Text style={{textAlign:"center",color:"white",fontSize:18}}>Login</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={()=> this.props.navigation.navigate("SignUp")}>
                 <Text style={{color:"#9c27b0",fontSize:18}}>Sign Up</Text>
               </TouchableOpacity>
+              {this.state.error !== null ? <Text style={s.error}>{this.state.error}</Text> : null}
+
         </View>
         </View>
       );

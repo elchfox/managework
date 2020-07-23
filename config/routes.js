@@ -7,17 +7,19 @@ import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 
 import SplashScreen from '../screens/SplashScreen';
+import ProfileCustomerScreen from '../screens/ProfileCustomerScreen';
+
 
 
 I18nManager.allowRTL(false);
 
 const AppNavigator = createStackNavigator({
-  // Splash: {
-  //       screen: SplashScreen,
-  //       navigationOptions: {
-  //         header: null,
-  //       },
-  //     },
+  Splash: {
+        screen: SplashScreen,
+        navigationOptions: {
+          header: null,
+        },
+      },
     
   
     Login: {
@@ -39,7 +41,13 @@ const AppNavigator = createStackNavigator({
     navigationOptions: {
       header: null,
     },
-  }
+  },
+  ProfileCustomer: {
+    screen: ProfileCustomerScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
   
 });
 

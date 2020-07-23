@@ -31,6 +31,21 @@ class Account {
     const json = await data.json();
     return json
   }
+
+  async myCustomers() {
+    const data = await fetch(`${global.apiUrl}/account/myCustomers?userId=${global.userId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': global.accessToken
+
+      },
+    });
+
+    const json = await data.json();
+    return json;
+  }
 }
 
 
