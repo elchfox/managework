@@ -51,6 +51,7 @@ export default class HomeScreen extends React.Component {
     })
     }
 
+    
     async logout(){
       await ManagerAccount.logout();
       this.props.navigation.navigate("Login")
